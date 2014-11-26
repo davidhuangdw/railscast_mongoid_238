@@ -123,6 +123,8 @@ GEM
       moped (~> 2.0.0)
       origin (~> 2.1)
       tzinfo (>= 0.3.37)
+    mongoid-sadstory (0.0.2)
+      mongoid
     moped (2.0.2)
       bson (~> 2.2)
       connection_pool (~> 2.0)
@@ -250,6 +252,7 @@ DEPENDENCIES
   haml-rails
   jquery-rails
   mongoid
+  mongoid-sadstory
   pry-byebug
   pry-doc
   pry-rails
