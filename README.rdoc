@@ -1,28 +1,53 @@
-== README
+### mongoid
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* mongoid
 
-Things you may want to cover:
+        # multi-parameter-attributes support
+        gem 'mongoid-sadstory'
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+        = simple_form_for ...
+          = f.input :release_on, as: :date
 
 
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+        # friendly-url: use name as id
+        class Product
+          field :name, type: String
+          field :_id, type: String, default: ->{name.to_s.parameterize}
+        end
+
+        # association
+        class Product
+          embeds_many :reviews
+        end
+        class Review
+          embedded_in :product
+        end
+        # views/products/show.html.haml
+        = simple_form_for [@product, Review.new] do |f|
+          = f.error_notification
+          = f.input :content, as: :text
+          = f.button :submit
+
+        # install
+        gem 'mongoid'
+        rails g mongoid:config
+
+* install mongodb
+
+        brew install mongodb
+        mkdir -p /data/db
+        brew info mongodb
+        ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents
+        lunchy start mongodb # lunchy/launchctl should run under 'non-tmux' environment
+        mongo
+
+* why mongo?
+    * http://www.railstips.org/blog/archives/2009/12/18/why-i-think-mongo-is-to-databases-what-rails-was-to-frameworks/
+    * schemeless:
+        * no need of migration, change scheme on the fly
+        * STI(single table inheritance) gone wild
+        * embeds_many
+    * more supportive type/index: hash, array, ...
+    * auto-counter
+    * reliable GridFS
+    * extra: mapReduce ...
